@@ -8,6 +8,6 @@ export default defineConfig({
     port: 3000,
   },
   build: {
-    target: ['chrome90', 'firefox90', 'safari15'],
+    target: ['es2020', 'chrome90'],
   },
 });
