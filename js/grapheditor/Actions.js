@@ -4,7 +4,7 @@
  *
  * Constructs the actions object for the given UI.
  */
-function Actions(editorUi) {
+window.Actions = function Actions(editorUi) {
   this.editorUi = editorUi;
   this.actions = new Object();
   this.init();
@@ -2036,7 +2036,7 @@ Actions.prototype.get = function (name) {
 /**
  * Constructs a new action for the given parameters.
  */
-function Action(label, funct, enabled, iconCls, shortcut, visible) {
+window.Action = function Action(label, funct, enabled, iconCls, shortcut, visible) {
   mxEventSource.call(this);
   this.label = label;
   this.funct = this.createFunction(funct);

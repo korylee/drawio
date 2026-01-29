@@ -1,5 +1,5 @@
-import { createSignal } from "solid-js";
-import { render } from "solid-js/web";
+import { createSignal, For, Show } from "solid-js";
+import { render, template } from "solid-js/web";
 
 /**
  * Copyright (c) 2006-2012, JGraph Holdings Ltd
@@ -1072,30 +1072,13 @@ BaseFormatPanel.prototype.createColorOption = function (
   var div = document.createElement("div");
   div.className = "geFormatEntry";
 
-  var cb = document.createElement("input");
-  cb.setAttribute("type", "checkbox");
-
-  if (!hideCheckbox) {
-    div.appendChild(cb);
-  }
-
-  var span = document.createElement("span");
-  mxUtils.write(span, label);
-  div.appendChild(span);
-
   var value = getColorFn();
   var applying = false;
   var dropper = null;
   var btn = null;
 
-  var clrInput = document.createElement("input");
-  clrInput.setAttribute("type", "color");
-  clrInput.style.position = "relative";
-  clrInput.style.visibility = "hidden";
-  clrInput.style.top = "10px";
-  clrInput.style.width = "0px";
-  clrInput.style.height = "0px";
-  clrInput.style.border = "none";
+  var clrInput;
+  var cb;
 
   // Extracts single color value from light-dark color
   function getActualColorValue(color, allowDefault) {
@@ -1202,31 +1185,45 @@ BaseFormatPanel.prototype.createColorOption = function (
         }
       }
 
-      btn.style.display = cb.checked || hideCheckbox ? "" : "none";
+      btn.style.display = (hideCheckbox || cb.checked) ? "" : "none";
       applying = false;
     }
   };
 
-  div.appendChild(clrInput);
+  render(() => {
+    const onChange = () => {
+      var color = clrInput.value;
 
-  mxEvent.addListener(clrInput, "change", function () {
-    var color = clrInput.value;
+      // Adds selected color to light-dark color
+      if (!singleColorMode) {
+        var cssColor = mxUtils.getLightDarkColor(value);
 
-    // Adds selected color to light-dark color
-    if (!singleColorMode) {
-      var cssColor = mxUtils.getLightDarkColor(value);
+        if (isDarkModeFn()) {
+          cssColor.dark = color;
+        } else {
+          cssColor.light = color;
+        }
 
-      if (isDarkModeFn()) {
-        cssColor.dark = color;
-      } else {
-        cssColor.light = color;
+        color = "light-dark(" + cssColor.light + ", " + cssColor.dark + ")";
       }
 
-      color = "light-dark(" + cssColor.light + ", " + cssColor.dark + ")";
-    }
+      apply(color);
+    };
 
-    apply(color);
-  });
+    const onGestureStart = () => {
+      if (document.activeElement == graph.cellEditor.textarea) {
+        selState = graph.cellEditor.saveSelection();
+      }
+    };
+
+    return (
+      <>
+        {!hideCheckbox && <input ref={(el) => (cb = el)} type="checkbox" on:pointerdown={onGestureStart} on:mousedown={onGestureStart} on:touchstart={onGestureStart} />}
+        <span>{label}</span>
+        <input ref={(el) => (clrInput = el)} type="color" style="position: relative; visibility: hidden; top: 10px; width: 0;height: 0;border:none" on:change={onChange} />
+      </>
+    );
+  }, div);
 
   btn = mxUtils.button(
     "",
@@ -1281,15 +1278,6 @@ BaseFormatPanel.prototype.createColorOption = function (
         apply(cb.checked ? defaultColor : mxConstants.NONE);
       }
     });
-
-    mxEvent.addGestureListeners(
-      cb,
-      mxUtils.bind(this, function (evt) {
-        if (document.activeElement == graph.cellEditor.textarea) {
-          selState = graph.cellEditor.saveSelection();
-        }
-      }),
-    );
 
     mxEvent.addGestureListeners(
       div,
@@ -6649,127 +6637,102 @@ DiagramStylePanel.prototype.addView = function (div) {
   var editor = ui.editor;
   var graph = editor.graph;
 
-  var opts = document.createElement("div");
-  opts.className = "geFormatEntry";
-
   // Adaptive Colors
   if (graph.isEnabled()) {
-    var table = document.createElement("table");
-    table.style.tableLayout = "fixed";
-    table.style.width = "204px";
+    var buttons = this.getGlobalStyleButtons();
+    render(() => {
+      const options = [
+        {
+          label: mxResources.get("default") + " (" + mxResources.get(Graph.getDefaultAdaptiveColorsKey()) + ")",
+          value: "default",
+        },
+        {
+          label: mxResources.get("automatic"),
+          value: "auto",
+        },
+        {
+          label: mxResources.get("simple"),
+          value: "simple",
+        },
+        {
+          label: mxResources.get("none"),
+          value: "none",
+        },
+        {
+          label: mxResources.get("automatic"),
+          value: "auto",
+        },
+      ];
+      const onChange = (evt) => {
+        var change = new ChangePageSetup(ui);
+        change.ignoreColor = true;
+        change.ignoreImage = true;
+        change.adaptiveColors = evt.target.value;
+        graph.model.execute(change);
+      };
 
-    var tbody = document.createElement("tbody");
-    var row = document.createElement("tr");
-    var left = document.createElement("td");
-    var right = left.cloneNode(true);
-
-    var label = document.createElement("div");
-    label.style.display = "inline-block";
-    label.style.boxSizing = "border-box";
-    label.style.overflow = "hidden";
-    label.style.textOverflow = "ellipsis";
-
-    var title = mxResources.get("adaptiveColors");
-    left.setAttribute("title", title);
-    mxUtils.write(label, title);
-    left.appendChild(label);
-
-    if (mxUtils.lightDarkColorSupported) {
-      label.style.width = "75%";
-      var img = document.createElement("img");
-      img.setAttribute("title", mxResources.get("light") + "/" + mxResources.get("dark"));
-      img.setAttribute("src", Editor.contrastImage);
-      img.className = "geButton";
-      img.style.width = "18px";
-      img.style.height = "18px";
-      img.style.verticalAlign = "bottom";
-      left.appendChild(img);
-
-      // Pressing label toggles dark/light mode
-      mxEvent.addListener(img, "click", function () {
+      const onSetDarkMode = () => {
         if (graph.isEnabled()) {
           ui.setDarkMode(!Editor.isDarkMode());
         }
-      });
-    } else {
-      label.style.width = "100%";
-    }
+      };
 
-    var dropdown = document.createElement("select");
-    dropdown.style.width = "82px";
+      const rows = (function () {
+        const result = [];
+        for (let i = 0; i < buttons.length; i += 2) {
+          const left = buttons[i];
+          const right = buttons[i + 1];
+          left && (left.style.width = "100%");
+          right && (right.style.width = "100%");
+          result.push(
+            <tr>
+              <td>{left}</td>
+              <td>{right}</td>
+            </tr>,
+          );
+        }
+        return result;
+      })();
 
-    var opt = document.createElement("option");
-    opt.setAttribute("title", mxResources.get("default") + " (" + mxResources.get(Graph.getDefaultAdaptiveColorsKey()) + ")");
-    mxUtils.write(opt, mxUtils.htmlEntities(opt.getAttribute("title")));
-    opt.setAttribute("value", "default");
-    dropdown.appendChild(opt);
-
-    var opt = document.createElement("option");
-    opt.setAttribute("title", mxResources.get("automatic"));
-    mxUtils.write(opt, mxUtils.htmlEntities(opt.getAttribute("title")));
-    opt.setAttribute("value", "auto");
-    dropdown.appendChild(opt);
-
-    var opt = document.createElement("option");
-    opt.setAttribute("title", mxResources.get("simple"));
-    mxUtils.write(opt, mxUtils.htmlEntities(opt.getAttribute("title")));
-    opt.setAttribute("value", "simple");
-    dropdown.appendChild(opt);
-
-    var opt = document.createElement("option");
-    opt.setAttribute("title", mxResources.get("none"));
-    mxUtils.write(opt, mxUtils.htmlEntities(opt.getAttribute("title")));
-    opt.setAttribute("value", "none");
-    dropdown.appendChild(opt);
-
-    dropdown.value = graph.adaptiveColors == null ? "default" : graph.adaptiveColors;
-
-    mxEvent.addListener(dropdown, "change", function () {
-      var change = new ChangePageSetup(ui);
-      change.ignoreColor = true;
-      change.ignoreImage = true;
-      change.adaptiveColors = dropdown.value;
-
-      graph.model.execute(change);
-    });
-
-    right.appendChild(dropdown);
-
-    if (!ui.isOffline() || mxClient.IS_CHROMEAPP || EditorUi.isElectronApp) {
-      right.appendChild(ui.menus.createHelpLink("https://github.com/jgraph/drawio/discussions/4713"));
-    }
-
-    row.appendChild(left);
-    row.appendChild(right);
-    tbody.appendChild(row);
-
-    var buttons = this.getGlobalStyleButtons();
-
-    for (var i = 0; i < buttons.length; i += 2) {
-      left = left.cloneNode(false);
-      right = right.cloneNode(false);
-      row = row.cloneNode(false);
-
-      var btn = buttons[i];
-      btn.style.width = "100%";
-
-      left.appendChild(btn);
-      row.appendChild(left);
-
-      btn = buttons[i + 1];
-
-      if (btn != null) {
-        btn.style.width = "100%";
-        right.appendChild(btn);
-      }
-
-      row.appendChild(right);
-      tbody.appendChild(row);
-    }
-
-    table.appendChild(tbody);
-    opts.appendChild(table);
-    div.appendChild(opts);
+      return (
+        <div class="geFormatEntry">
+          <table style="table-layout: fixed;width: 204px;">
+            <tbody>
+              <tr>
+                <td title={mxResources.get("adaptiveColors")}>
+                  <div style={`display: inline-block;box-sizing: border-box;overflow:hidden;text-overflow:ellipsis;width:${mxUtils.lightDarkColorSupported ? "75%" : "100%"}`}>
+                    {mxResources.get("adaptiveColors")}
+                  </div>
+                  <Show when={mxUtils.lightDarkColorSupported}>
+                    <img
+                      class="geButton"
+                      style="width:18px;height:18px;vertical-align:bottom"
+                      title={mxResources.get("light") + "/" + mxResources.get("dark")}
+                      src={Editor.contrastImage}
+                      alt=""
+                      on:click={onSetDarkMode}
+                    />
+                  </Show>
+                </td>
+                <td>
+                  <select value={graph.adaptiveColors == null ? "default" : graph.adaptiveColors} style="width: 82px" on:change={onChange}>
+                    <For each={options}>
+                      {(item) => (
+                        <option value={item.value} title={item.label}>
+                          {item.label}
+                        </option>
+                      )}
+                    </For>
+                  </select>
+                  {(!ui.isOffline() || mxClient.IS_CHROMEAPP || EditorUi.isElectronApp) && ui.menus.createHelpLink("https://github.com/jgraph/drawio/discussions/4713")}
+                </td>
+              </tr>
+              {rows}
+            </tbody>
+          </table>
+        </div>
+      );
+    }, div);
 
     if (graph.isEnabled() && Editor.styles != null) {
       this.addGraphStyles(div);

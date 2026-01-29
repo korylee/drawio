@@ -2700,7 +2700,7 @@ FilenameDialog.createFileTypes = function (editorUi, nameInput, types) {
 /**
  *
  */
-export const WrapperWindow = (window.WrapperWindow = function (editorUi, title, x, y, w, h, fn, div) {
+export let WrapperWindow = (window.WrapperWindow = function (editorUi, title, x, y, w, h, fn, div) {
   div = div != null ? div : document.createElement("div");
 
   this.window = new mxWindow(title, div, x, y, w, h, true, true);

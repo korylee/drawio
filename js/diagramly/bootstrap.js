@@ -10,90 +10,92 @@ export async function Bootstrap() {
   ]);
 
   // Uses grapheditor from devhost
-  await import('../grapheditor/Editor.js');
-  await import('../grapheditor/EditorUi.js');
+  await import("../grapheditor/Editor.js");
+  await import("../grapheditor/EditorUi.js");
   await mxscript(geBasePath + "/Sidebar.js");
   await mxscript(geBasePath + "/Graph.js");
-  await import('../grapheditor/Format.jsx');
-  await mxscript(geBasePath + "/Shapes.js");
-  await mxscript(geBasePath + "/Actions.js");
-  await import('../grapheditor/Menus.js');
+  await import("../grapheditor/Format.jsx");
+  await import("../grapheditor/Shapes.js");
+  await import("../grapheditor/Actions.js");
+  await import("../grapheditor/Menus.js");
   await mxscript(geBasePath + "/Toolbar.js");
   await mxscript(geBasePath + "/Dialogs.js");
 
   // Loads main classes
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-ActiveDirectory.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Advanced.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-AlibabaCloud.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-AlliedTelesis.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Android.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-ArchiMate.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-ArchiMate3.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Arrows2.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Atlassian.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-AWS.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-AWS3.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-AWS3D.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-AWS4.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-AWS4b.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Azure.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Azure2.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Basic.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Bootstrap.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-BPMN.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-C4.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Cabinet.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Cisco.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Cisco19.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-CiscoSafe.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Citrix.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Citrix2.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Cumulus.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-DFD.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Dynamics365.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-EIP.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Electrical.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-ER.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Floorplan.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Flowchart.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-FluidPower.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-GCP.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-GCP2.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-GCPIcons.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Gmdl.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-IBM.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-IBMCloud.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Infographic.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Ios.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Ios7.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Kubernetes.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-LeanMapping.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Mockup.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-MSCAE.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Network.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Network2.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Office.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-OpenStack.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-PID.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Rack.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Salesforce.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-SAP.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Signs.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Sitemap.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Sysml.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-ThreatModeling.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-UML25.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Veeam.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-Veeam2.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-VVD.js");
-  await mxscript(drawDevUrl + "js/diagramly/sidebar/Sidebar-WebIcons.js");
+  await Promise.all([
+    import("./sidebar/Sidebar.js"),
+    import("./sidebar/Sidebar-ActiveDirectory.js"),
+    import("./sidebar/Sidebar-Advanced.js"),
+    import("./sidebar/Sidebar-AlibabaCloud.js"),
+    import("./sidebar/Sidebar-AlliedTelesis.js"),
+    import("./sidebar/Sidebar-Android.js"),
+    import("./sidebar/Sidebar-ArchiMate.js"),
+    import("./sidebar/Sidebar-ArchiMate3.js"),
+    import("./sidebar/Sidebar-Arrows2.js"),
+    import("./sidebar/Sidebar-Atlassian.js"),
+    import("./sidebar/Sidebar-AWS.js"),
+    import("./sidebar/Sidebar-AWS3.js"),
+    import("./sidebar/Sidebar-AWS3D.js"),
+    import("./sidebar/Sidebar-AWS4.js"),
+    import("./sidebar/Sidebar-AWS4b.js"),
+    import("./sidebar/Sidebar-Azure.js"),
+    import("./sidebar/Sidebar-Azure2.js"),
+    import("./sidebar/Sidebar-Basic.js"),
+    import("./sidebar/Sidebar-Bootstrap.js"),
+    import("./sidebar/Sidebar-BPMN.js"),
+    import("./sidebar/Sidebar-C4.js"),
+    import("./sidebar/Sidebar-Cabinet.js"),
+    import("./sidebar/Sidebar-Cisco.js"),
+    import("./sidebar/Sidebar-Cisco19.js"),
+    import("./sidebar/Sidebar-CiscoSafe.js"),
+    import("./sidebar/Sidebar-Citrix.js"),
+    import("./sidebar/Sidebar-Citrix2.js"),
+    import("./sidebar/Sidebar-Cumulus.js"),
+    import("./sidebar/Sidebar-DFD.js"),
+    import("./sidebar/Sidebar-Dynamics365.js"),
+    import("./sidebar/Sidebar-EIP.js"),
+    import("./sidebar/Sidebar-Electrical.js"),
+    import("./sidebar/Sidebar-ER.js"),
+    import("./sidebar/Sidebar-Floorplan.js"),
+    import("./sidebar/Sidebar-Flowchart.js"),
+    import("./sidebar/Sidebar-FluidPower.js"),
+    import("./sidebar/Sidebar-GCP.js"),
+    import("./sidebar/Sidebar-GCP2.js"),
+    import("./sidebar/Sidebar-GCPIcons.js"),
+    import("./sidebar/Sidebar-Gmdl.js"),
+    import("./sidebar/Sidebar-IBM.js"),
+    import("./sidebar/Sidebar-IBMCloud.js"),
+    import("./sidebar/Sidebar-Infographic.js"),
+    import("./sidebar/Sidebar-Ios.js"),
+    import("./sidebar/Sidebar-Ios7.js"),
+    import("./sidebar/Sidebar-Kubernetes.js"),
+    import("./sidebar/Sidebar-LeanMapping.js"),
+    import("./sidebar/Sidebar-Mockup.js"),
+    import("./sidebar/Sidebar-MSCAE.js"),
+    import("./sidebar/Sidebar-Network.js"),
+    import("./sidebar/Sidebar-Network2.js"),
+    import("./sidebar/Sidebar-Office.js"),
+    import("./sidebar/Sidebar-OpenStack.js"),
+    import("./sidebar/Sidebar-PID.js"),
+    import("./sidebar/Sidebar-Rack.js"),
+    import("./sidebar/Sidebar-Salesforce.js"),
+    import("./sidebar/Sidebar-SAP.js"),
+    import("./sidebar/Sidebar-Signs.js"),
+    import("./sidebar/Sidebar-Sitemap.js"),
+    import("./sidebar/Sidebar-Sysml.js"),
+    import("./sidebar/Sidebar-ThreatModeling.js"),
+    import("./sidebar/Sidebar-UML25.js"),
+    import("./sidebar/Sidebar-Veeam.js"),
+    import("./sidebar/Sidebar-Veeam2.js"),
+    import("./sidebar/Sidebar-VVD.js"),
+    import("./sidebar/Sidebar-WebIcons.js"),
+  ]);
 
   await mxscript(drawDevUrl + "js/diagramly/util/mxJsCanvas.js");
   await mxscript(drawDevUrl + "js/diagramly/util/mxAsyncCanvas.js");
 
-  await mxscript(drawDevUrl + "js/diagramly/DrawioFile.js");
-  await mxscript(drawDevUrl + "js/diagramly/LocalFile.js");
+  await import("../diagramly/DrawioFile.js");
+  await import("../diagramly/LocalFile.js");
   await mxscript(drawDevUrl + "js/diagramly/LocalLibrary.js");
   await mxscript(drawDevUrl + "js/diagramly/StorageFile.js");
   await mxscript(drawDevUrl + "js/diagramly/StorageLibrary.js");
@@ -102,9 +104,9 @@ export async function Bootstrap() {
   await mxscript(drawDevUrl + "js/diagramly/EmbedFile.js");
   await mxscript(drawDevUrl + "js/diagramly/Dialogs.js");
   await mxscript(drawDevUrl + "js/diagramly/Editor.js");
-  await mxscript(drawDevUrl + "js/diagramly/EditorUi.js");
-  await mxscript(drawDevUrl + "js/diagramly/DiffSync.js");
-  await mxscript(drawDevUrl + "js/diagramly/Settings.js");
+  await import("../diagramly/EditorUi.js");
+  await import("../diagramly/DiffSync.js");
+  await import("../diagramly/Settings.js");
   await mxscript(drawDevUrl + "js/diagramly/DrawioFilePolling.js");
   await mxscript(drawDevUrl + "js/diagramly/DrawioFileSync.js");
 
@@ -137,7 +139,7 @@ export async function Bootstrap() {
   await mxscript(drawDevUrl + "js/diagramly/GitLabClient.js");
 
   await import("./App.jsx");
-  await mxscript(drawDevUrl + "js/diagramly/Menus.js");
+  await import("./Menus.js");
   await mxscript(drawDevUrl + "js/diagramly/Pages.js");
   await mxscript(drawDevUrl + "js/diagramly/Trees.js");
   await mxscript(drawDevUrl + "js/diagramly/Minimal.js");
@@ -145,7 +147,7 @@ export async function Bootstrap() {
   await mxscript(drawDevUrl + "js/diagramly/mxRuler.js");
   await mxscript(drawDevUrl + "js/diagramly/mxFreehand.js");
   await mxscript(drawDevUrl + "js/diagramly/P2PCollab.js");
-  await mxscript(drawDevUrl + "js/diagramly/DevTools.js");
+  await import("./DevTools.js");
 
   if (!window.DRAWIO_PUBLIC_BUILD) {
     await mxscript(drawDevUrl + "js/diagramly/Simple.js");

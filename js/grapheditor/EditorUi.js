@@ -1,6 +1,8 @@
 /**
  * Copyright (c) 2006-2012, JGraph Holdings Ltd
  */
+import { template } from "solid-js/web";
+
 /**
  * Constructs a new graph editor
  */
@@ -2569,11 +2571,7 @@ EditorUi.prototype.initCanvas = function () {
       this.editor.addListener("resetGraphView", updateChromelessToolbarPosition);
       updateChromelessToolbarPosition();
 
-      var btnCount = 0;
-
       var addButton = mxUtils.bind(this, function (fn, imgSrc, tip) {
-        btnCount++;
-
         var a = document.createElement("span");
         a.style.paddingLeft = "8px";
         a.style.paddingRight = "8px";
@@ -4611,12 +4609,9 @@ EditorUi.prototype.updateStatusAgain = function () {
  * Creates a new toolbar for the given container.
  */
 EditorUi.prototype.createStatusDiv = function (value) {
-  var div = document.createElement("div");
-  div.className = "geStatusDiv";
-  div.setAttribute("title", value);
-  div.innerText = value;
+  const genDiv = template(`<div class="geStatusDiv" title="${value}">${value}</div>`);
 
-  return div;
+  return genDiv();
 };
 
 /**
