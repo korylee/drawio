@@ -209,7 +209,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   await import('./grapheditor/Init');
   // mxClient
   await import('../mxgraph/src/index.js');
-  await sleep(1200);
+  await sleep(600);
 
   await Bootstrap();
 
@@ -221,7 +221,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   await import('./PostConfig');
 
-  await sleep(3200);
+  await sleep(600);
   typeof AJS === "undefined" && App.main();
 })();
 

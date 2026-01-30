@@ -1,11 +1,11 @@
 import { mxConstants } from "../util/mxConstants";
 import { mxUtils } from "../util/mxUtils";
-
+import { mxCellState } from "./mxCellState.js";
 /**
  * Copyright (c) 2006-2015, JGraph Holdings Ltd
  * Copyright (c) 2006-2015, draw.io AG
  */
-export const mxEdgeStyle = (window.mxEdgeStyle = {
+export const mxEdgeStyle = window.mxEdgeStyle = {
   /**
    * Class: mxEdgeStyle
    *
@@ -1415,4 +1415,4 @@ export const mxEdgeStyle = (window.mxEdgeStyle = {
 
     return result;
   },
-});
+};

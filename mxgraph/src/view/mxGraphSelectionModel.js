@@ -2,8 +2,8 @@
  * Copyright (c) 2006-2015, JGraph Holdings Ltd
  * Copyright (c) 2006-2015, draw.io AG
  */
-import {mxEventSource} from "../util/mxEventSource.js";
-import {mxClient} from "../mxClient.js";
+import { mxEventSource } from "../util/mxEventSource.js";
+import { mxClient } from "../mxClient.js";
 
 /**
  * Class: mxGraphSelectionModel
@@ -47,7 +47,7 @@ import {mxClient} from "../mxClient.js";
 export function mxGraphSelectionModel(graph) {
   this.graph = graph;
   this.cells = [];
-};
+}
 
 /**
  * Extends mxEventSource.
@@ -62,7 +62,7 @@ mxGraphSelectionModel.prototype.constructor = mxGraphSelectionModel;
  * If the resource for this key does not exist then the value is used as
  * the status message. Default is 'done'.
  */
-mxGraphSelectionModel.prototype.doneResource = (mxClient.language != 'none') ? 'done' : '';
+mxGraphSelectionModel.prototype.doneResource = mxClient.language != "none" ? "done" : "";
 
 /**
  * Variable: updatingSelectionResource
@@ -71,7 +71,7 @@ mxGraphSelectionModel.prototype.doneResource = (mxClient.language != 'none') ? '
  * being updated. If the resource for this key does not exist then the
  * value is used as the status message. Default is 'updatingSelection'.
  */
-mxGraphSelectionModel.prototype.updatingSelectionResource = (mxClient.language != 'none') ? 'updatingSelection' : '';
+mxGraphSelectionModel.prototype.updatingSelectionResource = mxClient.language != "none" ? "updatingSelection" : "";
 
 /**
  * Variable: graph
@@ -239,8 +239,7 @@ mxGraphSelectionModel.prototype.addCells = function (cells) {
     var tmp = [];
 
     for (var i = 0; i < cells.length; i++) {
-      if (!this.isSelected(cells[i]) &&
-        this.graph.isCellSelectable(cells[i])) {
+      if (!this.isSelected(cells[i]) && this.graph.isCellSelectable(cells[i])) {
         tmp.push(cells[i]);
       }
     }
@@ -293,17 +292,12 @@ mxGraphSelectionModel.prototype.removeCells = function (cells) {
  * remove - Array of <mxCell> to remove from the selection.
  */
 mxGraphSelectionModel.prototype.changeSelection = function (added, removed) {
-  if ((added != null &&
-      added.length > 0 &&
-      added[0] != null) ||
-    (removed != null &&
-      removed.length > 0 &&
-      removed[0] != null)) {
+  if ((added != null && added.length > 0 && added[0] != null) || (removed != null && removed.length > 0 && removed[0] != null)) {
     var change = new mxSelectionChange(this, added, removed);
     change.execute();
     var edit = new mxUndoableEdit(this, false);
     edit.add(change);
-    this.fireEvent(new mxEventObject(mxEvent.UNDO, 'edit', edit));
+    this.fireEvent(new mxEventObject(mxEvent.UNDO, "edit", edit));
   }
 };
 
@@ -318,8 +312,7 @@ mxGraphSelectionModel.prototype.changeSelection = function (added, removed) {
  * cell - <mxCell> to add to the selection.
  */
 mxGraphSelectionModel.prototype.cellAdded = function (cell) {
-  if (cell != null &&
-    !this.isSelected(cell)) {
+  if (cell != null && !this.isSelected(cell)) {
     this.cells.push(cell);
   }
 };
@@ -355,9 +348,9 @@ mxGraphSelectionModel.prototype.cellRemoved = function (cell) {
  */
 function mxSelectionChange(selectionModel, added, removed) {
   this.selectionModel = selectionModel;
-  this.added = (added != null) ? added.slice() : null;
-  this.removed = (removed != null) ? removed.slice() : null;
-};
+  this.added = added != null ? added.slice() : null;
+  this.removed = removed != null ? removed.slice() : null;
+}
 
 /**
  * Function: execute
@@ -365,10 +358,8 @@ function mxSelectionChange(selectionModel, added, removed) {
  * Changes the current root of the view.
  */
 mxSelectionChange.prototype.execute = function () {
-  var t0 = mxLog.enter('mxSelectionChange.execute');
-  window.status = mxResources.get(
-      this.selectionModel.updatingSelectionResource) ||
-    this.selectionModel.updatingSelectionResource;
+  var t0 = mxLog.enter("mxSelectionChange.execute");
+  window.status = mxResources.get(this.selectionModel.updatingSelectionResource) || this.selectionModel.updatingSelectionResource;
 
   if (this.removed != null) {
     for (var i = 0; i < this.removed.length; i++) {
@@ -386,10 +377,8 @@ mxSelectionChange.prototype.execute = function () {
   this.added = this.removed;
   this.removed = tmp;
 
-  window.status = mxResources.get(this.selectionModel.doneResource) ||
-    this.selectionModel.doneResource;
-  mxLog.leave('mxSelectionChange.execute', t0);
+  window.status = mxResources.get(this.selectionModel.doneResource) || this.selectionModel.doneResource;
+  mxLog.leave("mxSelectionChange.execute", t0);
 
-  this.selectionModel.fireEvent(new mxEventObject(mxEvent.CHANGE,
-    'added', this.added, 'removed', this.removed));
+  this.selectionModel.fireEvent(new mxEventObject(mxEvent.CHANGE, "added", this.added, "removed", this.removed));
 };

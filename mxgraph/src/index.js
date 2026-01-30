@@ -33,29 +33,41 @@ export * from "./util/mxXmlCanvas2D.js";
 export * from "./util/mxSvgCanvas2D.js";
 export * from "./util/mxGuide.js";
 
-// shape
-export * from './shape/mxShape'
-export * from './shape/mxStencil'
-export * from './shape/mxStencilRegistry'
-export * from './shape/mxMarker'
-export * from './shape/mxActor'
-export * from './shape/mxCloud'
-export * from './shape/mxRectangleShape'
-export * from './shape/mxEllipse'
-export * from './shape/mxDoubleEllipse'
+// shape 后续可以异步加载
+export * from "./shape/mxShape";
+export * from "./shape/mxStencil";
+export * from "./shape/mxStencilRegistry";
+export * from "./shape/mxMarker";
+export * from "./shape/mxActor";
+export * from "./shape/mxCloud";
+export * from "./shape/mxRectangleShape";
+export * from "./shape/mxEllipse";
+export * from "./shape/mxDoubleEllipse";
+export * from "./shape/mxRhombus";
+export * from "./shape/mxPolyline";
 
 // graph model
-export * from "./model/mxGraphModel"
-export * from "./model/mxCell"
-export * from "./model/mxGeometry"
-
+export * from "./model/mxGraphModel";
+export * from "./model/mxCell";
+export * from "./model/mxGeometry";
+export * from "./model/mxCellPath";
 
 // graph view
-export * from './view/mxPerimeter'
+export * from "./view/mxPerimeter";
+export * from "./view/mxPrintPreview";
+export * from "./view/mxStylesheet";
+export * from "./view/mxCellState";
+export * from "./view/mxGraphSelectionModel";
+export * from "./view/mxCellEditor";
+// export * from "./view/mxCellRenderer";
+export * from "./view/mxEdgeStyle";
+
+export * from "./view/mxLayoutManager";
+export * from "./view/mxSwimlaneManager";
+export * from "./view/mxTemporaryCellStates";
+export * from "./view/mxCellStatePreview";
 
 (async function () {
-  await mxClient.include(mxClient.basePath + "/shape/mxRhombus.js");
-  await mxClient.include(mxClient.basePath + "/shape/mxPolyline.js");
   await mxClient.include(mxClient.basePath + "/shape/mxArrow.js");
   await mxClient.include(mxClient.basePath + "/shape/mxArrowConnector.js");
   await mxClient.include(mxClient.basePath + "/shape/mxText.js");
@@ -90,52 +102,53 @@ export * from './view/mxPerimeter'
   await mxClient.include(mxClient.basePath + "/layout/hierarchical/mxHierarchicalLayout.js");
   await mxClient.include(mxClient.basePath + "/layout/hierarchical/mxSwimlaneLayout.js");
 
-  await Promise.all([
-    // import("./model/mxGraphModel"),
-    // import("./model/mxCell"),
-    // import("./model/mxGeometry"),
-    import("./model/mxCellPath"),
-  ])
+  // await Promise.all([
+  // import("./model/mxGraphModel"),
+  // import("./model/mxCell"),
+  // import("./model/mxGeometry"),
+  // import("./model/mxCellPath"),
+  // ])
 
   await Promise.all([
-    import('./view/mxPrintPreview'),
-    import('./view/mxStylesheet'),
-    import('./view/mxCellState'),
-    import('./view/mxGraphSelectionModel'),
-    import("./view/mxCellEditor"),
+    // import("./view/mxPrintPreview"),
+    // import("./view/mxStylesheet"),
+    // import("./view/mxCellState"),
+    // import("./view/mxGraphSelectionModel"),
+    // import("./view/mxCellEditor"),
     import("./view/mxCellRenderer"),
-    import("./view/mxEdgeStyle"),
+    // import("./view/mxEdgeStyle"),
     import("./view/mxStyleRegistry"),
     import("./view/mxGraphView"),
     import("./view/mxGraph"),
     import("./view/mxCellOverlay"),
     import("./view/mxOutline"),
     import("./view/mxMultiplicity"),
-    import("./view/mxLayoutManager"),
-    import("./view/mxSwimlaneManager"),
-    import("./view/mxTemporaryCellStates"),
-    import('./view/mxCellStatePreview.js'),
-    import('./view/mxConnectionConstraint'),
+    // import("./view/mxLayoutManager"),
+    // import("./view/mxSwimlaneManager"),
+    // import("./view/mxTemporaryCellStates"),
+    // import("./view/mxCellStatePreview.js"),
+    import("./view/mxConnectionConstraint"),
 
     //   handler
-    import('./handler/mxGraphHandler'),
-    import('./handler/mxPanningHandler'),
-    import('./handler/mxPopupMenuHandler'),
-    import('./handler/mxCellHighlight'),
-    import('./handler/mxCellMarker'),
-    import('./handler/mxSelectionCellsHandler'),
-    import('./handler/mxConnectionHandler'),
-    import('./handler/mxConstraintHandler'),
+    import("./handler/mxGraphHandler"),
+    import("./handler/mxPanningHandler"),
+    import("./handler/mxPopupMenuHandler"),
+    import("./handler/mxCellHighlight"),
+    import("./handler/mxCellMarker"),
+    import("./handler/mxSelectionCellsHandler"),
+    import("./handler/mxConnectionHandler"),
+    import("./handler/mxConstraintHandler"),
+    import("./handler/mxRubberband"),
+    import("./handler/mxHandle"),
+    import("./handler/mxVertexHandler"),
+    import("./handler/mxEdgeHandler"),
+    import("./handler/mxElbowEdgeHandler"),
+    import("./handler/mxEdgeSegmentHandler"),
+    import("./handler/mxKeyHandler"),
+    import("./handler/mxTooltipHandler"),
+    import("./handler/mxCellTracker"),
   ]);
-  await mxClient.include(mxClient.basePath + "/handler/mxRubberband.js");
-  await mxClient.include(mxClient.basePath + "/handler/mxHandle.js");
-  await mxClient.include(mxClient.basePath + "/handler/mxVertexHandler.js");
-  await mxClient.include(mxClient.basePath + "/handler/mxEdgeHandler.js");
-  await mxClient.include(mxClient.basePath + "/handler/mxElbowEdgeHandler.js");
-  await mxClient.include(mxClient.basePath + "/handler/mxEdgeSegmentHandler.js");
-  await mxClient.include(mxClient.basePath + "/handler/mxKeyHandler.js");
-  await mxClient.include(mxClient.basePath + "/handler/mxTooltipHandler.js");
-  await mxClient.include(mxClient.basePath + "/handler/mxCellTracker.js");
+
   await mxClient.include(mxClient.basePath + "/io/mxCodecRegistry.js");
   await mxClient.include(mxClient.basePath + "/io/mxCodec.js");
   await mxClient.include(mxClient.basePath + "/io/mxObjectCodec.js");

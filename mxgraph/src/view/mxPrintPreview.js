@@ -2,6 +2,14 @@
  * Copyright (c) 2006-2019, JGraph Holdings Ltd
  * Copyright (c) 2006-2017, draw.io AG
  */
+
+import { mxRectangle } from "../util/mxRectangle.js";
+import { mxClient } from "../mxClient.js";
+import { mxUtils } from "../util/mxUtils.js";
+import { mxPoint } from "../util/mxPoint.js";
+import { mxTemporaryCellStates } from "./mxTemporaryCellStates.js";
+import { mxConstants } from "../util/mxConstants.js";
+
 /**
  * Class: mxPrintPreview
  *
@@ -120,14 +128,14 @@
  */
 export const mxPrintPreview = window.mxPrintPreview = function mxPrintPreview(graph, scale, pageFormat, border, x0, y0, borderColor, title, pageSelector) {
   this.graph = graph;
-  this.scale = (scale != null) ? scale : 1 / graph.pageScale;
-  this.border = (border != null) ? border : 0;
-  this.pageFormat = mxRectangle.fromRectangle((pageFormat != null) ? pageFormat : graph.pageFormat);
-  this.title = (title != null) ? title : 'Printer-friendly version';
-  this.x0 = (x0 != null) ? x0 : 0;
-  this.y0 = (y0 != null) ? y0 : 0;
+  this.scale = scale != null ? scale : 1 / graph.pageScale;
+  this.border = border != null ? border : 0;
+  this.pageFormat = mxRectangle.fromRectangle(pageFormat != null ? pageFormat : graph.pageFormat);
+  this.title = title != null ? title : "Printer-friendly version";
+  this.x0 = x0 != null ? x0 : 0;
+  this.y0 = y0 != null ? y0 : 0;
   this.borderColor = borderColor;
-  this.pageSelector = (pageSelector != null) ? pageSelector : true;
+  this.pageSelector = pageSelector != null ? pageSelector : true;
 };
 
 /**
@@ -170,7 +178,7 @@ mxPrintPreview.prototype.pageMargin = 27;
  *
  * overflowClipMargin for SVG container. Default is 1px.
  */
-mxPrintPreview.prototype.overflowClipMargin = '1px';
+mxPrintPreview.prototype.overflowClipMargin = "1px";
 
 /**
  * Variable: gridSize
@@ -207,28 +215,28 @@ mxPrintPreview.prototype.gridStrokeWidth = 0.5;
  * the output to get resterized and are therefore disabled for print and PDF.
  */
 mxPrintPreview.prototype.defaultCss =
-  '@media screen {\n' +
-  '  body {\n' +
-  '    background: gray;\n' +
-  '    transform: scale(0.7);\n' +
-  '    transform-origin: 0 0;\n' +
-  '  }\n' +
-  '  body > div {\n' +
-  '    margin-bottom: 20px;\n' +
-  '    box-sizing: border-box;\n' +
-  '  }\n' +
-  '  a, a * {\n' +
-  '    pointer-events: none;\n' +
-  '  }\n' +
-  '}\n' +
-  '@media print {\n' +
-  '  body {\n' +
-  '    margin: 0px;\n' +
-  '  }\n' +
-  '  * {\n' +
-  '    -webkit-print-color-adjust: exact;\n' +
-  '  }\n' +
-  '}';
+  "@media screen {\n" +
+  "  body {\n" +
+  "    background: gray;\n" +
+  "    transform: scale(0.7);\n" +
+  "    transform-origin: 0 0;\n" +
+  "  }\n" +
+  "  body > div {\n" +
+  "    margin-bottom: 20px;\n" +
+  "    box-sizing: border-box;\n" +
+  "  }\n" +
+  "  a, a * {\n" +
+  "    pointer-events: none;\n" +
+  "  }\n" +
+  "}\n" +
+  "@media print {\n" +
+  "  body {\n" +
+  "    margin: 0px;\n" +
+  "  }\n" +
+  "  * {\n" +
+  "    -webkit-print-color-adjust: exact;\n" +
+  "  }\n" +
+  "}";
 
 /**
  * Variable: scale
@@ -309,7 +317,7 @@ mxPrintPreview.prototype.printBackgroundImage = false;
  *
  * Holds the color value for the page background color. Default is #ffffff.
  */
-mxPrintPreview.prototype.backgroundColor = '#ffffff';
+mxPrintPreview.prototype.backgroundColor = "#ffffff";
 
 /**
  * Variable: borderColor
@@ -380,7 +388,7 @@ mxPrintPreview.prototype.getWindow = function () {
  * IE8 in IE8 standards mode and edge in IE9 standards mode.
  */
 mxPrintPreview.prototype.getDoctype = function () {
-  var dt = '';
+  var dt = "";
 
   if (document.documentMode == 8) {
     dt = '<meta http-equiv="X-UA-Compatible" content="IE=8">';
@@ -399,7 +407,7 @@ mxPrintPreview.prototype.getDoctype = function () {
  */
 mxPrintPreview.prototype.appendGraph = function (graph, scale, x0, y0, forcePageBreaks, keepOpen, id, pageFormat, cells) {
   this.graph = graph;
-  this.scale = (scale != null) ? scale : 1 / graph.pageScale;
+  this.scale = scale != null ? scale : 1 / graph.pageScale;
   this.x0 = x0;
   this.y0 = y0;
   this.open(null, null, forcePageBreaks, keepOpen, id, pageFormat, cells);
@@ -413,27 +421,34 @@ mxPrintPreview.prototype.appendGraph = function (graph, scale, x0, y0, forcePage
 mxPrintPreview.prototype.getPageClassCss = function (pageClass, pageFormat) {
   var pm = this.pageMargin;
   var ppi = this.pixelsPerInch;
-  var size = ((pageFormat.width / ppi)).toFixed(2) + 'in ' +
-    ((pageFormat.height / ppi)).toFixed(2) + 'in';
+  var size = (pageFormat.width / ppi).toFixed(2) + "in " + (pageFormat.height / ppi).toFixed(2) + "in";
 
-  var css = '@page ' + pageClass + ' {\n' +
-    '  margin: 0;\n' +
-    '  size: ' + mxUtils.htmlEntities(size) + ';\n' +
-    '}\n' +
-    '.' + pageClass + ' {\n' +
-    '  page: ' + pageClass + ';\n' +
-    ((mxClient.IS_SF) ?
-      '  padding: ' + mxUtils.htmlEntities((pm / ppi).toFixed(2)) + 'in;\n' : '') +
-    '  width: ' + mxUtils.htmlEntities(((pageFormat.width /
-      ppi)).toFixed(2)) + 'in;\n' +
-    '  height: ' + mxUtils.htmlEntities(((pageFormat.height /
-      ppi)).toFixed(2)) + 'in;\n' +
-    '}\n';
+  var css =
+    "@page " +
+    pageClass +
+    " {\n" +
+    "  margin: 0;\n" +
+    "  size: " +
+    mxUtils.htmlEntities(size) +
+    ";\n" +
+    "}\n" +
+    "." +
+    pageClass +
+    " {\n" +
+    "  page: " +
+    pageClass +
+    ";\n" +
+    (mxClient.IS_SF ? "  padding: " + mxUtils.htmlEntities((pm / ppi).toFixed(2)) + "in;\n" : "") +
+    "  width: " +
+    mxUtils.htmlEntities((pageFormat.width / ppi).toFixed(2)) +
+    "in;\n" +
+    "  height: " +
+    mxUtils.htmlEntities((pageFormat.height / ppi).toFixed(2)) +
+    "in;\n" +
+    "}\n";
 
   if (!mxClient.IS_SF) {
-    css += '.' + pageClass + ' > svg {\n' +
-      '  margin: ' + mxUtils.htmlEntities((pm / ppi).toFixed(2)) + 'in;\n' +
-      '}\n';
+    css += "." + pageClass + " > svg {\n" + "  margin: " + mxUtils.htmlEntities((pm / ppi).toFixed(2)) + "in;\n" + "}\n";
   }
 
   return css;
@@ -459,7 +474,7 @@ mxPrintPreview.prototype.open = function (css, targetWindow, forcePageBreaks, ke
     // exception in IE. This and any other exceptions are simply ignored.
     var previousInitializeOverlay = this.graph.cellRenderer.initializeOverlay;
     var customPageFormat = pageFormat != null;
-    pageFormat = mxRectangle.fromRectangle((pageFormat != null) ? pageFormat : this.pageFormat);
+    pageFormat = mxRectangle.fromRectangle(pageFormat != null ? pageFormat : this.pageFormat);
 
     // Adds 1 px border for pagination to match rendering in application
     var pw = pageFormat.width + 1;
@@ -480,7 +495,7 @@ mxPrintPreview.prototype.open = function (css, targetWindow, forcePageBreaks, ke
       };
     }
 
-    this.wnd = (targetWindow != null) ? targetWindow : this.wnd;
+    this.wnd = targetWindow != null ? targetWindow : this.wnd;
     var isNewWindow = false;
 
     if (this.wnd == null) {
@@ -497,20 +512,19 @@ mxPrintPreview.prototype.open = function (css, targetWindow, forcePageBreaks, ke
         doc.writeln(dt);
       }
 
-      if (document.compatMode === 'CSS1Compat') {
-        doc.writeln('<!DOCTYPE html>');
+      if (document.compatMode === "CSS1Compat") {
+        doc.writeln("<!DOCTYPE html>");
       }
 
-      doc.writeln('<html>');
-      doc.writeln('<head>');
+      doc.writeln("<html>");
+      doc.writeln("<head>");
       this.writeHead(doc, css);
-      doc.writeln('</head>');
-      doc.writeln('<body>');
+      doc.writeln("</head>");
+      doc.writeln("<body>");
     }
 
     // Computes the horizontal and vertical page count
-    var bounds = mxRectangle.fromRectangle((cells != null) ?
-      this.graph.getBoundingBox(cells) : this.graph.getGraphBounds());
+    var bounds = mxRectangle.fromRectangle(cells != null ? this.graph.getBoundingBox(cells) : this.graph.getGraphBounds());
     var currentScale = this.graph.getView().getScale();
     var sc = currentScale / this.scale;
     var tr = this.graph.getView().getTranslate();
@@ -527,8 +541,8 @@ mxPrintPreview.prototype.open = function (css, targetWindow, forcePageBreaks, ke
     }
 
     // Store the available page area
-    var availableWidth = pw - (this.border * 2);
-    var availableHeight = ph - (this.border * 2);
+    var availableWidth = pw - this.border * 2;
+    var availableHeight = ph - this.border * 2;
 
     // Adds margins to page format
     ph += this.marginTop + this.marginBottom;
@@ -547,12 +561,10 @@ mxPrintPreview.prototype.open = function (css, targetWindow, forcePageBreaks, ke
     if (customPageFormat) {
       if (this.pendingCss == null) {
         this.pageFormatClass = {};
-        this.pendingCss = '';
+        this.pendingCss = "";
       }
 
-      pageClass = mxUtils.htmlEntities('gePageFormat-' +
-        String(pageFormat.width).replace(/\./g, '_') + '-' +
-        String(pageFormat.height).replace(/\./g, '_'));
+      pageClass = mxUtils.htmlEntities("gePageFormat-" + String(pageFormat.width).replace(/\./g, "_") + "-" + String(pageFormat.height).replace(/\./g, "_"));
 
       if (this.pageFormatClass[pageClass] == null) {
         this.pageFormatClass[pageClass] = true;
@@ -564,8 +576,8 @@ mxPrintPreview.prototype.open = function (css, targetWindow, forcePageBreaks, ke
       // Border of the DIV (aka page) inside the document
       if (this.borderColor != null) {
         div.style.borderColor = this.borderColor;
-        div.style.borderStyle = 'solid';
-        div.style.borderWidth = '1px';
+        div.style.borderStyle = "solid";
+        div.style.borderWidth = "1px";
       }
 
       // Needs to be assigned directly because IE doesn't support
@@ -575,8 +587,8 @@ mxPrintPreview.prototype.open = function (css, targetWindow, forcePageBreaks, ke
       if (pageClass != null) {
         div.classList.add(pageClass);
       } else {
-        div.style.width = pageFormat.width + 'px';
-        div.style.height = pageFormat.height + 'px';
+        div.style.width = pageFormat.width + "px";
+        div.style.height = pageFormat.height + "px";
       }
 
       doc.body.appendChild(div);
@@ -595,27 +607,25 @@ mxPrintPreview.prototype.open = function (css, targetWindow, forcePageBreaks, ke
     // Appends each page to the page output for printing, making
     // sure there will be a page break after each page (ie. div)
     for (var i = 0; i < vpages; i++) {
-      var dy = i * availableHeight / this.scale - this.y0 / this.scale +
-        (bounds.y - tr.y * currentScale) / currentScale - i;
+      var dy = (i * availableHeight) / this.scale - this.y0 / this.scale + (bounds.y - tr.y * currentScale) / currentScale - i;
 
       for (var j = 0; j < hpages; j++) {
         if (this.wnd == null) {
           return null;
         }
 
-        var dx = j * availableWidth / this.scale - this.x0 / this.scale +
-          (bounds.x - tr.x * currentScale) / currentScale - j;
+        var dx = (j * availableWidth) / this.scale - this.x0 / this.scale + (bounds.x - tr.x * currentScale) / currentScale - j;
         var pageNum = i * hpages + j + 1;
-        div = doc.createElement('div');
-        div.style.display = 'flex';
-        div.style.alignItems = 'center';
-        div.style.justifyContent = 'center';
+        div = doc.createElement("div");
+        div.style.display = "flex";
+        div.style.alignItems = "center";
+        div.style.justifyContent = "center";
         var clip = new mxRectangle(dx, dy, availableWidth, availableHeight);
         this.addGraphFragment(-dx, -dy, this.scale, pageNum, div, clip);
 
         // Adds given ID as anchor for internal links in first page
         if (id != null && i == 0 && j == 0) {
-          div.setAttribute('id', id);
+          div.setAttribute("id", id);
         }
 
         addPage(div, true);
@@ -656,10 +666,10 @@ mxPrintPreview.prototype.open = function (css, targetWindow, forcePageBreaks, ke
  */
 mxPrintPreview.prototype.addPendingCss = function (doc) {
   if (this.pendingCss != null) {
-    var style = doc.createElement('style');
-    style.setAttribute('type', 'text/css');
+    var style = doc.createElement("style");
+    style.setAttribute("type", "text/css");
     style.appendChild(doc.createTextNode(this.pendingCss));
-    var head = doc.getElementsByTagName('head')[0];
+    var head = doc.getElementsByTagName("head")[0];
     head.appendChild(style);
     this.pendingCss = null;
   }
@@ -676,8 +686,8 @@ mxPrintPreview.prototype.closeDocument = function () {
       var doc = this.wnd.document;
 
       this.writePostfix(doc);
-      doc.writeln('</body>');
-      doc.writeln('</html>');
+      doc.writeln("</body>");
+      doc.writeln("</html>");
       doc.close();
       this.addPendingCss(doc);
 
@@ -697,7 +707,7 @@ mxPrintPreview.prototype.closeDocument = function () {
  */
 mxPrintPreview.prototype.writeHead = function (doc, css) {
   if (this.title != null) {
-    doc.writeln('<title>' + mxUtils.htmlEntities(this.title) + '</title>');
+    doc.writeln("<title>" + mxUtils.htmlEntities(this.title) + "</title>");
   }
 
   // Adds all required stylesheets and strips dev mode src path if needed
@@ -705,11 +715,11 @@ mxPrintPreview.prototype.writeHead = function (doc, css) {
   // to the basePath for loading all JS files from the src directory
   var path = mxClient.basePath;
 
-  if (path.substring(path.length - 4) == '/src') {
+  if (path.substring(path.length - 4) == "/src") {
     path = path.substring(0, path.length - 4);
   }
 
-  mxClient.link('stylesheet', path + '/css/common.css', doc);
+  mxClient.link("stylesheet", path + "/css/common.css", doc);
 
   // Removes horizontal rules and page selector from print output
   doc.writeln('<style type="text/css">');
@@ -718,22 +728,19 @@ mxPrintPreview.prototype.writeHead = function (doc, css) {
 
   // Sets printer defaults
   if (this.addPageCss && pf != null) {
-    var size = ((pf.width / this.pixelsPerInch)).toFixed(2) + 'in ' +
-      ((pf.height / this.pixelsPerInch)).toFixed(2) + 'in';
+    var size = (pf.width / this.pixelsPerInch).toFixed(2) + "in " + (pf.height / this.pixelsPerInch).toFixed(2) + "in";
 
-    doc.writeln('@page {');
-    doc.writeln('  margin: ' +
-      mxUtils.htmlEntities((this.pageMargin /
-        this.pixelsPerInch).toFixed(2)) + 'in;');
-    doc.writeln('  size: ' + mxUtils.htmlEntities(size) + ';');
-    doc.writeln('}');
+    doc.writeln("@page {");
+    doc.writeln("  margin: " + mxUtils.htmlEntities((this.pageMargin / this.pixelsPerInch).toFixed(2)) + "in;");
+    doc.writeln("  size: " + mxUtils.htmlEntities(size) + ";");
+    doc.writeln("}");
   }
 
   if (css != null) {
     doc.writeln(mxUtils.htmlEntities(css, false, false, false));
   }
 
-  doc.writeln('</style>');
+  doc.writeln("</style>");
 };
 
 /**
@@ -824,9 +831,8 @@ mxPrintPreview.prototype.addGraphFragment = function (dx, dy, scale, pageNumber,
     // Uses CSS transform for scaling
     if (this.useCssTransforms()) {
       var g = view.getDrawPane().parentNode;
-      g.setAttribute('transformOrigin', '0 0');
-      g.setAttribute('transform', 'scale(' + scale + ',' + scale + ')' +
-        'translate(' + dx + ',' + dy + ')');
+      g.setAttribute("transformOrigin", "0 0");
+      g.setAttribute("transform", "scale(" + scale + "," + scale + ")" + "translate(" + dx + "," + dy + ")");
 
       scale = 1;
       dx = 0;
@@ -850,8 +856,7 @@ mxPrintPreview.prototype.addGraphFragment = function (dx, dy, scale, pageNumber,
 
   // Avoids destruction of existing handlers
   var updateHandler = this.graph.selectionCellsHandler.updateHandler;
-  this.graph.selectionCellsHandler.updateHandler = function () {
-  };
+  this.graph.selectionCellsHandler.updateHandler = function () {};
 
   // Redraws only states that intersect the clip
   var redraw = this.graph.cellRenderer.redraw;
@@ -864,10 +869,7 @@ mxPrintPreview.prototype.addGraphFragment = function (dx, dy, scale, pageNumber,
     var bg = this.getBackgroundImage();
 
     if (bg != null) {
-      var bounds = new mxRectangle(
-        Math.round(dx * s + bg.x),
-        Math.round(dy * s + bg.y),
-        bg.width - 1, bg.height - 1);
+      var bounds = new mxRectangle(Math.round(dx * s + bg.x), Math.round(dy * s + bg.y), bg.width - 1, bg.height - 1);
 
       var bgImg = new mxImageShape(bounds, bg.src);
       bgImg.dialect = this.graph.dialect;
@@ -876,11 +878,7 @@ mxPrintPreview.prototype.addGraphFragment = function (dx, dy, scale, pageNumber,
 
   // Gets the transformed clip for intersection check below
   if (this.clipping) {
-    var tempClip = new mxRectangle(
-      (clip.x + translate.x + 1.5) * s,
-      (clip.y + translate.y + 1.5) * s,
-      (clip.width - 1.5) * s / realScale,
-      (clip.height - 1.5) * s / realScale);
+    var tempClip = new mxRectangle((clip.x + translate.x + 1.5) * s, (clip.y + translate.y + 1.5) * s, ((clip.width - 1.5) * s) / realScale, ((clip.height - 1.5) * s) / realScale);
     var self = this;
 
     // Checks clipping rectangle for speedup
@@ -895,8 +893,7 @@ mxPrintPreview.prototype.addGraphFragment = function (dx, dy, scale, pageNumber,
 
           // Stops rendering if outside clip for speedup but ignores
           // edge labels where width and height is set to 0
-          if (bbox != null && bbox.width > 0 && bbox.height > 0 &&
-            !mxUtils.intersects(tempClip, bbox)) {
+          if (bbox != null && bbox.width > 0 && bbox.height > 0 && !mxUtils.intersects(tempClip, bbox)) {
             return;
           }
         }
@@ -910,11 +907,7 @@ mxPrintPreview.prototype.addGraphFragment = function (dx, dy, scale, pageNumber,
     };
 
     if (bgImg != null) {
-      var temp = new mxRectangle(
-        bgImg.bounds.x * s + (translate.x - dx) * s,
-        bgImg.bounds.y * s + (translate.y - dy) * s,
-        bgImg.bounds.width * s,
-        bgImg.bounds.height * s);
+      var temp = new mxRectangle(bgImg.bounds.x * s + (translate.x - dx) * s, bgImg.bounds.y * s + (translate.y - dy) * s, bgImg.bounds.width * s, bgImg.bounds.height * s);
 
       if (!mxUtils.intersects(tempClip, temp)) {
         bgImg = null;
@@ -928,14 +921,19 @@ mxPrintPreview.prototype.addGraphFragment = function (dx, dy, scale, pageNumber,
   }
 
   var temp = null;
-
   try {
     // Creates the temporary cell states in the view and
     // draws them onto the temporary DOM nodes in the view
     var cells = [this.getRoot()];
-    temp = new mxTemporaryCellStates(view, scale, cells, null, mxUtils.bind(this, function (state) {
-      return this.getLinkForCellState(state);
-    }));
+    temp = new mxTemporaryCellStates(
+      view,
+      scale,
+      cells,
+      null,
+      mxUtils.bind(this, function (state) {
+        return this.getLinkForCellState(state);
+      }),
+    );
   } finally {
     // Removes everything but the SVG node
     var tmp = div.firstChild;
@@ -944,29 +942,26 @@ mxPrintPreview.prototype.addGraphFragment = function (dx, dy, scale, pageNumber,
       var next = tmp.nextSibling;
       var name = tmp.nodeName.toLowerCase();
 
-      if (name == 'svg') {
-        tmp.style.top = '';
-        tmp.style.left = '';
-        tmp.style.width = '';
-        tmp.style.height = '';
-        tmp.style.display = '';
-        tmp.style.maxWidth = '100%';
-        tmp.style.maxHeight = '100%';
-        tmp.style.overflow = (mxClient.IS_SF) ? 'hidden' : 'clip';
+      if (name == "svg") {
+        tmp.style.top = "";
+        tmp.style.left = "";
+        tmp.style.width = "";
+        tmp.style.height = "";
+        tmp.style.display = "";
+        tmp.style.maxWidth = "100%";
+        tmp.style.maxHeight = "100%";
+        tmp.style.overflow = mxClient.IS_SF ? "hidden" : "clip";
         tmp.style.overflowClipMargin = this.overflowClipMargin;
-        tmp.setAttribute('viewBox', '0 0 ' +
-          ((mxClient.IS_SF) ?
-            ((clip.width + 1) + ' ' + (clip.height + 1)) :
-            ((clip.width - 1) + ' ' + (clip.height - 1))));
+        tmp.setAttribute("viewBox", "0 0 " + (mxClient.IS_SF ? clip.width + 1 + " " + (clip.height + 1) : clip.width - 1 + " " + (clip.height - 1)));
 
         this.addGrid(tmp, clip);
 
         // Workaround for no dimension in Safari
         if (mxClient.IS_SF) {
           if (clip.width > clip.height) {
-            tmp.style.height = '100%';
+            tmp.style.height = "100%";
           } else {
-            tmp.style.width = '100%';
+            tmp.style.width = "100%";
           }
         }
       }
@@ -1022,9 +1017,7 @@ mxPrintPreview.prototype.addGrid = function (svg, clip) {
 mxPrintPreview.prototype.createSvgGrid = function (svg, clip) {
   var size = this.gridSize;
   var svgDoc = svg.ownerDocument;
-  var group = (svgDoc.createElementNS != null) ?
-    svgDoc.createElementNS(mxConstants.NS_SVG, 'g') :
-    svgDoc.createElement('g');
+  var group = svgDoc.createElementNS != null ? svgDoc.createElementNS(mxConstants.NS_SVG, "g") : svgDoc.createElement("g");
 
   var xp = mxUtils.mod(Math.ceil(Math.round(clip.x) / size), this.gridSteps);
   var x = mxUtils.mod(size - mxUtils.mod(Math.round(clip.x), size), size);
@@ -1039,34 +1032,28 @@ mxPrintPreview.prototype.createSvgGrid = function (svg, clip) {
   var hlines = Math.ceil(clip.height / size);
 
   for (var i = 0; i < hlines; i++) {
-    var line = (svgDoc.createElementNS != null) ?
-      svgDoc.createElementNS(mxConstants.NS_SVG, 'line') :
-      svgDoc.createElement('line');
-    line.setAttribute('x1', 0);
-    line.setAttribute('y1', (i * size) + y);
-    line.setAttribute('x2', clip.width);
-    line.setAttribute('y2', (i * size) + y);
-    line.setAttribute('stroke', this.gridColor);
-    line.setAttribute('opacity', (mxUtils.mod(i + yp,
-      this.gridSteps) == 0) ? '1' : '0.2');
-    line.setAttribute('stroke-width', '0.5');
+    var line = svgDoc.createElementNS != null ? svgDoc.createElementNS(mxConstants.NS_SVG, "line") : svgDoc.createElement("line");
+    line.setAttribute("x1", 0);
+    line.setAttribute("y1", i * size + y);
+    line.setAttribute("x2", clip.width);
+    line.setAttribute("y2", i * size + y);
+    line.setAttribute("stroke", this.gridColor);
+    line.setAttribute("opacity", mxUtils.mod(i + yp, this.gridSteps) == 0 ? "1" : "0.2");
+    line.setAttribute("stroke-width", "0.5");
     group.appendChild(line);
   }
 
   var vlines = Math.ceil(clip.width / size);
 
   for (var i = 0; i < vlines; i++) {
-    var line = (svgDoc.createElementNS != null) ?
-      svgDoc.createElementNS(mxConstants.NS_SVG, 'line') :
-      svgDoc.createElement('line');
-    line.setAttribute('x1', (i * size) + x);
-    line.setAttribute('y1', 0);
-    line.setAttribute('x2', (i * size) + x);
-    line.setAttribute('y2', clip.height);
-    line.setAttribute('stroke', this.gridColor);
-    line.setAttribute('opacity', (mxUtils.mod(i + xp,
-      this.gridSteps) == 0) ? '1' : '0.2');
-    line.setAttribute('stroke-width', '0.5');
+    var line = svgDoc.createElementNS != null ? svgDoc.createElementNS(mxConstants.NS_SVG, "line") : svgDoc.createElement("line");
+    line.setAttribute("x1", i * size + x);
+    line.setAttribute("y1", 0);
+    line.setAttribute("x2", i * size + x);
+    line.setAttribute("y2", clip.height);
+    line.setAttribute("stroke", this.gridColor);
+    line.setAttribute("opacity", mxUtils.mod(i + xp, this.gridSteps) == 0 ? "1" : "0.2");
+    line.setAttribute("stroke-width", "0.5");
     group.appendChild(line);
   }
 
@@ -1079,7 +1066,7 @@ mxPrintPreview.prototype.createSvgGrid = function (svg, clip) {
  * Returns true if the given node is a test label.
  */
 mxPrintPreview.prototype.isTextLabel = function (node) {
-  return tmp.style.cursor == 'default' || node.nodeName.toLowerCase() == 'div';
+  return tmp.style.cursor == "default" || node.nodeName.toLowerCase() == "div";
 };
 
 /**

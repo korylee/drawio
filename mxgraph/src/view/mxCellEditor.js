@@ -92,7 +92,7 @@ import { mxUtils } from "../util/mxUtils";
  *
  * graph - Reference to the enclosing <mxGraph>.
  */
-export const mxCellEditor = (window.mxCellEditor = function mxCellEditor(graph) {
+export const mxCellEditor = window.mxCellEditor = function mxCellEditor(graph) {
   this.graph = graph;
 
   // Stops editing after zoom changes
@@ -124,7 +124,7 @@ export const mxCellEditor = (window.mxCellEditor = function mxCellEditor(graph) 
   });
 
   this.graph.getModel().addListener(mxEvent.CHANGE, this.changeHandler);
-});
+};
 
 /**
  * Variable: graph

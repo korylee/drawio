@@ -2,6 +2,10 @@
  * Copyright (c) 2006-2015, JGraph Holdings Ltd
  * Copyright (c) 2006-2015, draw.io AG
  */
+import { mxEvent } from "../util/mxEvent.js";
+import { mxUtils } from "../util/mxUtils.js";
+import { mxClient } from "../mxClient.js";
+
 /**
  * Class: mxKeyHandler
  *
@@ -63,7 +67,7 @@
  * element is used as the event target, that is, the object where the key
  * event listener is installed.
  */
-function mxKeyHandler(graph, target)
+export const mxKeyHandler =  window.mxKeyHandler = function mxKeyHandler(graph, target)
 {
 	if (graph != null)
 	{

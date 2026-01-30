@@ -2,7 +2,7 @@
  * Copyright (c) 2006-2015, JGraph Holdings Ltd
  * Copyright (c) 2006-2015, draw.io AG
  */
-import {mxDictionary} from "../util/mxDictionary.js";
+import { mxDictionary } from "../util/mxDictionary.js";
 
 /**
  *
@@ -21,7 +21,7 @@ import {mxDictionary} from "../util/mxDictionary.js";
 export function mxCellStatePreview(graph) {
   this.deltas = new mxDictionary();
   this.graph = graph;
-};
+}
 
 /**
  * Variable: graph
@@ -57,14 +57,14 @@ mxCellStatePreview.prototype.isEmpty = function () {
  * Function: moveState
  */
 mxCellStatePreview.prototype.moveState = function (state, dx, dy, add, includeEdges) {
-  add = (add != null) ? add : true;
-  includeEdges = (includeEdges != null) ? includeEdges : true;
+  add = add != null ? add : true;
+  includeEdges = includeEdges != null ? includeEdges : true;
 
   var delta = this.deltas.get(state.cell);
 
   if (delta == null) {
     // Note: Deltas stores the point and the state since the key is a string.
-    delta = {point: new mxPoint(dx, dy), state: state};
+    delta = { point: new mxPoint(dx, dy), state: state };
     this.deltas.put(state.cell, delta);
     this.count++;
   } else if (add) {
@@ -86,13 +86,17 @@ mxCellStatePreview.prototype.moveState = function (state, dx, dy, add, includeEd
  * Function: show
  */
 mxCellStatePreview.prototype.show = function (visitor) {
-  this.deltas.visit(mxUtils.bind(this, function (key, delta) {
-    this.translateState(delta.state, delta.point.x, delta.point.y);
-  }));
+  this.deltas.visit(
+    mxUtils.bind(this, function (key, delta) {
+      this.translateState(delta.state, delta.point.x, delta.point.y);
+    }),
+  );
 
-  this.deltas.visit(mxUtils.bind(this, function (key, delta) {
-    this.revalidateState(delta.state, delta.point.x, delta.point.y, visitor);
-  }));
+  this.deltas.visit(
+    mxUtils.bind(this, function (key, delta) {
+      this.revalidateState(delta.state, delta.point.x, delta.point.y, visitor);
+    }),
+  );
 };
 
 /**
@@ -140,9 +144,13 @@ mxCellStatePreview.prototype.revalidateState = function (state, dx, dy, visitor)
     var pState = state.view.getState(model.getParent(state.cell));
 
     // Moves selection vertices which are relative
-    if ((dx != 0 || dy != 0) && geo != null && geo.relative &&
-      model.isVertex(state.cell) && (pState == null ||
-        model.isVertex(pState.cell) || this.deltas.get(state.cell) != null)) {
+    if (
+      (dx != 0 || dy != 0) &&
+      geo != null &&
+      geo.relative &&
+      model.isVertex(state.cell) &&
+      (pState == null || model.isVertex(pState.cell) || this.deltas.get(state.cell) != null)
+    ) {
       state.x += dx;
       state.y += dy;
     }

@@ -6,8 +6,7 @@ import {mxPoint} from "../util/mxPoint.js";
 import {mxRectangle} from "../util/mxRectangle.js";
 
 /**
- * Class: mxCellState
- *
+ * @Class mxCellState
  * Represents the current state of a cell in a given <mxGraphView>.
  *
  * For edges, the edge label position is stored in <absoluteOffset>.

@@ -2,8 +2,12 @@
  * Copyright (c) 2006-2015, JGraph Holdings Ltd
  * Copyright (c) 2006-2015, draw.io AG
  */
+import { mxConstants } from "../util/mxConstants.js";
+import { mxPerimeter } from "./mxPerimeter.js";
+import { mxUtils } from "../util/mxUtils.js";
+
 /**
- * Class: mxStylesheet
+ * @Class mxStylesheet
  *
  * Defines the appearance of the cells in a graph. See <putCellStyle> for an
  * example of creating a new cell style. It is recommended to use objects, not
