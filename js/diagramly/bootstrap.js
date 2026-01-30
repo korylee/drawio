@@ -96,8 +96,8 @@ export async function Bootstrap() {
 
   await import("../diagramly/DrawioFile.js");
   await import("../diagramly/LocalFile.js");
-  await mxscript(drawDevUrl + "js/diagramly/LocalLibrary.js");
-  await mxscript(drawDevUrl + "js/diagramly/StorageFile.js");
+  await import("../diagramly/LocalLibrary.js");
+  await import("../diagramly/StorageFile.js");
   await mxscript(drawDevUrl + "js/diagramly/StorageLibrary.js");
   await mxscript(drawDevUrl + "js/diagramly/RemoteFile.js");
   await mxscript(drawDevUrl + "js/diagramly/RemoteLibrary.js");

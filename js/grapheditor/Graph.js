@@ -2102,7 +2102,7 @@ Graph.exploreFromCell = function (sourceGraph, selectionCell, config) {
           graph.labelsVisible = false;
           ignored = true;
 
-          mxEffects.animateChanges(graph, changes, function () {
+          mxUtils.animateChanges(graph, changes, function () {
             // Keeps parallel edges apart
             var layout = new mxParallelEdgeLayout(graph);
             layout.spacing = 60;

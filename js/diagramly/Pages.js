@@ -131,13 +131,6 @@ MovePage.prototype.execute = function () {
 };
 
 /**
- * Class: mxCurrentRootChange
- *
- * Action to change the current root in a view.
- *
- * Constructor: mxCurrentRootChange
- *
- * Constructs a change of the current root in the given view.
  */
 function SelectPage(ui, page, viewState) {
   this.ui = ui;

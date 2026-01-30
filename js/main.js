@@ -203,12 +203,12 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   window.drawDevUrl = "";
   window.geBasePath = "js/grapheditor";
   window.mxBasePath = "mxgraph/src";
-  window.mxForceIncludes = false;
 
-  mxscript(drawDevUrl + "js/PreConfig.js");
-  mxscript(drawDevUrl + "js/diagramly/Init.js");
-  mxscript(geBasePath + "/Init.js");
-  await mxscript(mxBasePath + "/mxClient.js");
+  await import('./PreConfig');
+  await import('./diagramly/Init')
+  await import('./grapheditor/Init');
+  // mxClient
+  await import('../mxgraph/src/index.js');
   await sleep(1200);
 
   await Bootstrap();
@@ -219,9 +219,9 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     mxscript("js/desktop/ElectronApp.js");
   }
 
-  await mxscript(drawDevUrl + "js/PostConfig.js");
+  await import('./PostConfig');
 
-  await sleep(3600);
+  await sleep(3200);
   typeof AJS === "undefined" && App.main();
 })();
 

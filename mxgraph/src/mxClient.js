@@ -2,7 +2,7 @@
  * Copyright (c) 2006-2017, JGraph Holdings Ltd
  * Copyright (c) 2006-2017, draw.io AG
  */
-var mxClient = {
+export const mxClient = (window.mxClient = {
   /**
    * Class: mxClient
    *
@@ -329,7 +329,7 @@ var mxClient = {
     // TODO
     // document.write('<script src="' + src + '"></script>');
   },
-};
+});
 
 /**
  * Variable: mxLoadResources
@@ -351,24 +351,6 @@ if (typeof mxLoadResources == "undefined") {
 }
 
 /**
- * Variable: mxForceIncludes
- *
- * Optional global config variable to force loading the JavaScript files in
- * development mode. Default is undefined. NOTE: This is a global variable,
- * not a variable of mxClient.
- *
- * (code)
- * <script type="text/javascript">
- * 		var mxForceIncludes = true;
- * </script>
- * <script type="text/javascript" src="/path/to/core/directory/js/mxClient.js"></script>
- * (end)
- */
-if (typeof mxForceIncludes == "undefined") {
-  mxForceIncludes = false;
-}
-
-/**
  * Variable: mxResourceExtension
  *
  * Optional global config variable to specify the extension of resource files.
@@ -382,7 +364,7 @@ if (typeof mxForceIncludes == "undefined") {
  * (end)
  */
 if (typeof mxResourceExtension == "undefined") {
-  mxResourceExtension = ".txt";
+  window.mxResourceExtension = ".txt";
 }
 
 /**
@@ -400,7 +382,7 @@ if (typeof mxResourceExtension == "undefined") {
  * (end)
  */
 if (typeof mxLoadStylesheets == "undefined") {
-  mxLoadStylesheets = true;
+  window.mxLoadStylesheets = true;
 }
 
 /**
@@ -544,145 +526,3 @@ if (mxLoadStylesheets) {
 if (typeof mxLanguages != "undefined" && mxLanguages != null) {
   mxClient.languages = mxLanguages;
 }
-
-// PREPROCESSOR-REMOVE-START
-// If script is loaded via CommonJS, do not write <script> tags to the page
-// for dependencies. These are already included in the build.
-if (mxForceIncludes || !(typeof module === "object" && module.exports != null)) {
-  (async function () {
-    // PREPROCESSOR-REMOVE-END
-    await mxClient.include(mxClient.basePath + "/util/mxLog.js");
-    await mxClient.include(mxClient.basePath + "/util/mxObjectIdentity.js");
-    await mxClient.include(mxClient.basePath + "/util/mxDictionary.js");
-    await mxClient.include(mxClient.basePath + "/util/mxResources.js");
-    await mxClient.include(mxClient.basePath + "/util/mxPoint.js");
-    await mxClient.include(mxClient.basePath + "/util/mxRectangle.js");
-    await mxClient.include(mxClient.basePath + "/util/mxEffects.js");
-    await mxClient.include(mxClient.basePath + "/util/mxUtils.js");
-    await mxClient.include(mxClient.basePath + "/util/mxConstants.js");
-    await mxClient.include(mxClient.basePath + "/util/mxEventObject.js");
-    await mxClient.include(mxClient.basePath + "/util/mxMouseEvent.js");
-    await mxClient.include(mxClient.basePath + "/util/mxEventSource.js");
-    await mxClient.include(mxClient.basePath + "/util/mxEvent.js");
-    await mxClient.include(mxClient.basePath + "/util/mxXmlRequest.js");
-    await mxClient.include(mxClient.basePath + "/util/mxClipboard.js");
-    await mxClient.include(mxClient.basePath + "/util/mxWindow.js");
-    await mxClient.include(mxClient.basePath + "/util/mxForm.js");
-    await mxClient.include(mxClient.basePath + "/util/mxImage.js");
-    await mxClient.include(mxClient.basePath + "/util/mxDivResizer.js");
-    await mxClient.include(mxClient.basePath + "/util/mxDragSource.js");
-    await mxClient.include(mxClient.basePath + "/util/mxToolbar.js");
-    await mxClient.include(mxClient.basePath + "/util/mxUndoableEdit.js");
-    await mxClient.include(mxClient.basePath + "/util/mxUndoManager.js");
-    await mxClient.include(mxClient.basePath + "/util/mxUrlConverter.js");
-    await mxClient.include(mxClient.basePath + "/util/mxPanningManager.js");
-    await mxClient.include(mxClient.basePath + "/util/mxPopupMenu.js");
-    await mxClient.include(mxClient.basePath + "/util/mxAutoSaveManager.js");
-    await mxClient.include(mxClient.basePath + "/util/mxAnimation.js");
-    await mxClient.include(mxClient.basePath + "/util/mxMorphing.js");
-    await mxClient.include(mxClient.basePath + "/util/mxImageBundle.js");
-    await mxClient.include(mxClient.basePath + "/util/mxImageExport.js");
-    await mxClient.include(mxClient.basePath + "/util/mxAbstractCanvas2D.js");
-    await mxClient.include(mxClient.basePath + "/util/mxXmlCanvas2D.js");
-    await mxClient.include(mxClient.basePath + "/util/mxSvgCanvas2D.js");
-    await mxClient.include(mxClient.basePath + "/util/mxGuide.js");
-    await mxClient.include(mxClient.basePath + "/shape/mxShape.js");
-    await mxClient.include(mxClient.basePath + "/shape/mxStencil.js");
-    await mxClient.include(mxClient.basePath + "/shape/mxStencilRegistry.js");
-    await mxClient.include(mxClient.basePath + "/shape/mxMarker.js");
-    await mxClient.include(mxClient.basePath + "/shape/mxActor.js");
-    await mxClient.include(mxClient.basePath + "/shape/mxCloud.js");
-    await mxClient.include(mxClient.basePath + "/shape/mxRectangleShape.js");
-    await mxClient.include(mxClient.basePath + "/shape/mxEllipse.js");
-    await mxClient.include(mxClient.basePath + "/shape/mxDoubleEllipse.js");
-    await mxClient.include(mxClient.basePath + "/shape/mxRhombus.js");
-    await mxClient.include(mxClient.basePath + "/shape/mxPolyline.js");
-    await mxClient.include(mxClient.basePath + "/shape/mxArrow.js");
-    await mxClient.include(mxClient.basePath + "/shape/mxArrowConnector.js");
-    await mxClient.include(mxClient.basePath + "/shape/mxText.js");
-    await mxClient.include(mxClient.basePath + "/shape/mxTriangle.js");
-    await mxClient.include(mxClient.basePath + "/shape/mxHexagon.js");
-    await mxClient.include(mxClient.basePath + "/shape/mxLine.js");
-    await mxClient.include(mxClient.basePath + "/shape/mxImageShape.js");
-    await mxClient.include(mxClient.basePath + "/shape/mxLabel.js");
-    await mxClient.include(mxClient.basePath + "/shape/mxCylinder.js");
-    await mxClient.include(mxClient.basePath + "/shape/mxConnector.js");
-    await mxClient.include(mxClient.basePath + "/shape/mxSwimlane.js");
-    await mxClient.include(mxClient.basePath + "/layout/mxGraphLayout.js");
-    await mxClient.include(mxClient.basePath + "/layout/mxStackLayout.js");
-    await mxClient.include(mxClient.basePath + "/layout/mxPartitionLayout.js");
-    await mxClient.include(mxClient.basePath + "/layout/mxCompactTreeLayout.js");
-    await mxClient.include(mxClient.basePath + "/layout/mxRadialTreeLayout.js");
-    await mxClient.include(mxClient.basePath + "/layout/mxFastOrganicLayout.js");
-    await mxClient.include(mxClient.basePath + "/layout/mxCircleLayout.js");
-    await mxClient.include(mxClient.basePath + "/layout/mxParallelEdgeLayout.js");
-    await mxClient.include(mxClient.basePath + "/layout/mxCompositeLayout.js");
-    await mxClient.include(mxClient.basePath + "/layout/mxEdgeLabelLayout.js");
-    await mxClient.include(mxClient.basePath + "/layout/hierarchical/model/mxGraphAbstractHierarchyCell.js");
-    await mxClient.include(mxClient.basePath + "/layout/hierarchical/model/mxGraphHierarchyNode.js");
-    await mxClient.include(mxClient.basePath + "/layout/hierarchical/model/mxGraphHierarchyEdge.js");
-    await mxClient.include(mxClient.basePath + "/layout/hierarchical/model/mxGraphHierarchyModel.js");
-    await mxClient.include(mxClient.basePath + "/layout/hierarchical/model/mxSwimlaneModel.js");
-    await mxClient.include(mxClient.basePath + "/layout/hierarchical/stage/mxHierarchicalLayoutStage.js");
-    await mxClient.include(mxClient.basePath + "/layout/hierarchical/stage/mxMedianHybridCrossingReduction.js");
-    await mxClient.include(mxClient.basePath + "/layout/hierarchical/stage/mxMinimumCycleRemover.js");
-    await mxClient.include(mxClient.basePath + "/layout/hierarchical/stage/mxCoordinateAssignment.js");
-    await mxClient.include(mxClient.basePath + "/layout/hierarchical/stage/mxSwimlaneOrdering.js");
-    await mxClient.include(mxClient.basePath + "/layout/hierarchical/mxHierarchicalLayout.js");
-    await mxClient.include(mxClient.basePath + "/layout/hierarchical/mxSwimlaneLayout.js");
-    await mxClient.include(mxClient.basePath + "/model/mxGraphModel.js");
-    await mxClient.include(mxClient.basePath + "/model/mxCell.js");
-    await mxClient.include(mxClient.basePath + "/model/mxGeometry.js");
-    await mxClient.include(mxClient.basePath + "/model/mxCellPath.js");
-    await mxClient.include(mxClient.basePath + "/view/mxPerimeter.js");
-    await mxClient.include(mxClient.basePath + "/view/mxPrintPreview.js");
-    await mxClient.include(mxClient.basePath + "/view/mxStylesheet.js");
-    await mxClient.include(mxClient.basePath + "/view/mxCellState.js");
-    await mxClient.include(mxClient.basePath + "/view/mxGraphSelectionModel.js");
-    await mxClient.include(mxClient.basePath + "/view/mxCellEditor.js");
-    await mxClient.include(mxClient.basePath + "/view/mxCellRenderer.js");
-    await mxClient.include(mxClient.basePath + "/view/mxEdgeStyle.js");
-    await mxClient.include(mxClient.basePath + "/view/mxStyleRegistry.js");
-    await mxClient.include(mxClient.basePath + "/view/mxGraphView.js");
-    await mxClient.include(mxClient.basePath + "/view/mxGraph.js");
-    await mxClient.include(mxClient.basePath + "/view/mxCellOverlay.js");
-    await mxClient.include(mxClient.basePath + "/view/mxOutline.js");
-    await mxClient.include(mxClient.basePath + "/view/mxMultiplicity.js");
-    await mxClient.include(mxClient.basePath + "/view/mxLayoutManager.js");
-    await mxClient.include(mxClient.basePath + "/view/mxSwimlaneManager.js");
-    await mxClient.include(mxClient.basePath + "/view/mxTemporaryCellStates.js");
-    await mxClient.include(mxClient.basePath + "/view/mxCellStatePreview.js");
-    await mxClient.include(mxClient.basePath + "/view/mxConnectionConstraint.js");
-    await mxClient.include(mxClient.basePath + "/handler/mxGraphHandler.js");
-    await mxClient.include(mxClient.basePath + "/handler/mxPanningHandler.js");
-    await mxClient.include(mxClient.basePath + "/handler/mxPopupMenuHandler.js");
-    await mxClient.include(mxClient.basePath + "/handler/mxCellMarker.js");
-    await mxClient.include(mxClient.basePath + "/handler/mxSelectionCellsHandler.js");
-    await mxClient.include(mxClient.basePath + "/handler/mxConnectionHandler.js");
-    await mxClient.include(mxClient.basePath + "/handler/mxConstraintHandler.js");
-    await mxClient.include(mxClient.basePath + "/handler/mxRubberband.js");
-    await mxClient.include(mxClient.basePath + "/handler/mxHandle.js");
-    await mxClient.include(mxClient.basePath + "/handler/mxVertexHandler.js");
-    await mxClient.include(mxClient.basePath + "/handler/mxEdgeHandler.js");
-    await mxClient.include(mxClient.basePath + "/handler/mxElbowEdgeHandler.js");
-    await mxClient.include(mxClient.basePath + "/handler/mxEdgeSegmentHandler.js");
-    await mxClient.include(mxClient.basePath + "/handler/mxKeyHandler.js");
-    await mxClient.include(mxClient.basePath + "/handler/mxTooltipHandler.js");
-    await mxClient.include(mxClient.basePath + "/handler/mxCellTracker.js");
-    await mxClient.include(mxClient.basePath + "/handler/mxCellHighlight.js");
-    await mxClient.include(mxClient.basePath + "/io/mxCodecRegistry.js");
-    await mxClient.include(mxClient.basePath + "/io/mxCodec.js");
-    await mxClient.include(mxClient.basePath + "/io/mxObjectCodec.js");
-    await mxClient.include(mxClient.basePath + "/io/mxCellCodec.js");
-    await mxClient.include(mxClient.basePath + "/io/mxModelCodec.js");
-    await mxClient.include(mxClient.basePath + "/io/mxRootChangeCodec.js");
-    await mxClient.include(mxClient.basePath + "/io/mxChildChangeCodec.js");
-    await mxClient.include(mxClient.basePath + "/io/mxTerminalChangeCodec.js");
-    await mxClient.include(mxClient.basePath + "/io/mxGenericChangeCodec.js");
-    await mxClient.include(mxClient.basePath + "/io/mxGraphCodec.js");
-    await mxClient.include(mxClient.basePath + "/io/mxGraphViewCodec.js");
-    await mxClient.include(mxClient.basePath + "/io/mxStylesheetCodec.js");
-  })();
-  // PREPROCESSOR-REMOVE-START
-}
-// PREPROCESSOR-REMOVE-END

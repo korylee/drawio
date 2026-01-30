@@ -1169,23 +1169,25 @@ BaseFormatPanel.prototype.createColorOption = function (
         }
       }
 
-      if (graph.isSpecialColor(value)) {
-        cb.style.display = "none";
-      } else {
-        cb.style.display = "";
-
-        if (value != null && value != mxConstants.NONE) {
-          cb.setAttribute("checked", "checked");
-          cb.defaultChecked = true;
-          cb.checked = true;
+      if (cb) {
+        if (graph.isSpecialColor(value)) {
+          cb.style.display = "none";
         } else {
-          cb.removeAttribute("checked");
-          cb.defaultChecked = false;
-          cb.checked = false;
+          cb.style.display = "";
+
+          if (value != null && value != mxConstants.NONE) {
+            cb.setAttribute("checked", "checked");
+            cb.defaultChecked = true;
+            cb.checked = true;
+          } else {
+            cb.removeAttribute("checked");
+            cb.defaultChecked = false;
+            cb.checked = false;
+          }
         }
       }
 
-      btn.style.display = (hideCheckbox || cb.checked) ? "" : "none";
+      btn.style.display = hideCheckbox || cb.checked ? "" : "none";
       applying = false;
     }
   };
@@ -1218,7 +1220,9 @@ BaseFormatPanel.prototype.createColorOption = function (
 
     return (
       <>
-        {!hideCheckbox && <input ref={(el) => (cb = el)} type="checkbox" on:pointerdown={onGestureStart} on:mousedown={onGestureStart} on:touchstart={onGestureStart} />}
+        <Show when={!hideCheckbox}>
+          <input ref={(el) => (cb = el)} type="checkbox" on:pointerdown={onGestureStart} on:mousedown={onGestureStart} on:touchstart={onGestureStart} />
+        </Show>
         <span>{label}</span>
         <input ref={(el) => (clrInput = el)} type="color" style="position: relative; visibility: hidden; top: 10px; width: 0;height: 0;border:none" on:change={onChange} />
       </>
@@ -1249,7 +1253,7 @@ BaseFormatPanel.prototype.createColorOption = function (
   );
 
   btn.className = "geColorBtn";
-  btn.style.display = cb.checked || hideCheckbox ? "" : "none";
+  btn.style.display = hideCheckbox || cb.checked ? "" : "none";
   div.appendChild(btn);
 
   var clr = value != null && typeof value === "string" && value.charAt(0) == "#" ? value.substring(1).toUpperCase() : value;
@@ -1589,14 +1593,11 @@ BaseFormatPanel.prototype.createRelativeOption = function (label, key, width, ha
 BaseFormatPanel.prototype.addLabel = function (div, title, right, width) {
   width = width != null ? width : 61;
 
-  var label = document.createElement("div");
-  mxUtils.write(label, title);
-  label.style.position = "absolute";
-  label.style.left = 226 - right - width + "px";
-  label.style.width = width + "px";
-  label.style.marginTop = "10px";
-  label.style.display = "flex";
-  label.style.justifyContent = "center";
+  const genLabel = template(
+    `<div style="position: absolute; left: ${226 - right - width + "px"}; width:${width + "px"}; margin-top: 10px;display:flex;justify-content:center;">${title}</div>`,
+  );
+
+  const label = genLabel();
   div.appendChild(label);
 
   return label;

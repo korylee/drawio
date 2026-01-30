@@ -2,6 +2,9 @@
  * Copyright (c) 2006-2015, JGraph Holdings Ltd
  * Copyright (c) 2006-2015, draw.io AG
  */
+import { mxEvent } from "./mxEvent";
+import { mxEventSource } from "./mxEventSource";
+
 /**
  * @class mxPopupMenu
  *
@@ -28,7 +31,7 @@
  *
  * Fires after the menu has been shown in <popup>.
  */
-function mxPopupMenu(factoryMethod) {
+export const mxPopupMenu = window.mxPopupMenu = function mxPopupMenu(factoryMethod) {
   this.factoryMethod = factoryMethod;
 
   if (factoryMethod != null) {

@@ -20,7 +20,7 @@
  * }
  * (end)
  */
-var mxStencilRegistry = {
+export const mxStencilRegistry = window.mxStencilRegistry = {
   /**
    * Class: mxStencilRegistry
    *

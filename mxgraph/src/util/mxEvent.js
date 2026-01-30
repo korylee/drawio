@@ -2,7 +2,7 @@
  * Copyright (c) 2006-2015, JGraph Holdings Ltd
  * Copyright (c) 2006-2015, draw.io AG
  */
-var mxEvent = {
+export const mxEvent = window.mxEvent = {
   /**
    * Class: mxEvent
    *

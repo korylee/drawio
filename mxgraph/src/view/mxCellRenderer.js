@@ -32,7 +32,7 @@
  * arrow, rectangle, ellipse, rhombus, image, line, label, cylinder,
  * swimlane, connector, actor and cloud.
  */
-function mxCellRenderer() { };
+export const mxCellRenderer = window.mxCellRenderer = function mxCellRenderer() { };
 
 /**
  * Variable: defaultShapes

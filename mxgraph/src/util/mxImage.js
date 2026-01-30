@@ -11,7 +11,7 @@
  *
  * Constructs a new image.
  */
-function mxImage(src, width, height, x, y) {
+export const mxImage = window.mxImage = function mxImage(src, width, height, x, y) {
   this.src = src;
   this.width = width != null ? width : this.width;
   this.height = height != null ? height : this.height;
